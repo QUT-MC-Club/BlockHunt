@@ -1,0 +1,34 @@
+{
+  "gameType.blockhunt.standard": "Block Hunt",
+
+  "event.blockhunt.block_changed": "You are now disguised as a %s!",
+  "event.blockhunt.already_block": "You are already a %s!",
+
+  "event.blockhunt.hider_found": "%s has found %s!",
+  "event.blockhunt.seeker_killed": "%s has been ended by %s!",
+
+  "event.blockhunt.death": "You have died.",
+  "event.blockhunt.death_time": "You will respawn shortly, in %s seconds.",
+
+  "event.blockhunt.seeker_spawn": "You are a seeker!",
+  "event.blockhunt.hider_spawn": "You are a hider!",
+
+  "bossbar.blockhunt.not_hidden": "You are not hidden!",
+  "bossbar.blockhunt.hidden": "You are currently hidden.",
+
+  "bossbar.blockhunt.seekers_release": "Seekers released!",
+
+  "sidebar.blockhunt.game_time": "Game time left: %s",
+  "sidebar.blockhunt.seeker_countdown": "Seekers released in %s...",
+  "sidebar.blockhunt.map_name": "Map: %s",
+  "sidebar.blockhunt.seeker_count": "Seeker(s): %s",
+  "sidebar.blockhunt.hider_count": "Hider(s): %s",
+
+  "event.blockhunt.win": "The winning team is %s!",
+  "event.blockhunt.win_hider": "They had %s hider(s) left!",
+  "event.blockhunt.win_seeker": "They successfully caught %s hider(s)!"
+
+
+
+
+}

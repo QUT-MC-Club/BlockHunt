@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.voxxin.blockhunt.game.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BossBarWidgetMixin",
+    "DisplayEntityMixin",
+    "ServerPlayerNetworkHandlerMixin",
+    "WorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

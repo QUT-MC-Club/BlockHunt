@@ -1,0 +1,8 @@
+{
+  "type": "blockhunt:blockhunt",
+  "name": "Block Hunt: Fort du perdu",
+  "icon": "minecraft:fern",
+  "map": {
+    "id": "blockhunt:fort_du_perdu"
+  }
+}

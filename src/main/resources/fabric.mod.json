@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "blockhunt",
+  "version": "${version}",
+  "name": "Block Hunt",
+  "description": "Block Hunt",
+  "authors": [
+    "ella"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.voxxin.blockhunt.BlockHunt"
+    ]
+  },
+  "mixins": [
+    "blockhunt.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*"
+  }
+}
