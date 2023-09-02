@@ -264,10 +264,11 @@ public class BlockHuntActive {
 
         for (Block block : deniedBlockInteractions) {
 
-            if (block == clickedBlock && !isSameBlock) {
+            if (block == clickedBlock) {
                 return ActionResult.FAIL;
             }
         }
+
         return ActionResult.PASS;
     }
 
@@ -294,7 +295,7 @@ public class BlockHuntActive {
     }
 
     private void removePlayer(ServerPlayerEntity player) {
-        player.changeGameMode(GameMode.ADVENTURE);
+        if (player.interactionManager.getGameMode() == GameMode.SPECTATOR || player.interactionManager.getGameMode() == GameMode.SURVIVAL) player.changeGameMode(GameMode.ADVENTURE);
         BlockHuntPlayer blockHuntPlayer = this.participants.get(PlayerRef.of(player));
         blockHuntPlayer.resetDisguise();
         blockHuntPlayer.removeTimeBar();
