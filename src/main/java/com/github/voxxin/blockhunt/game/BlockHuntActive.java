@@ -159,7 +159,6 @@ public class BlockHuntActive {
             // Unique Gamerules
 
             game.listen(GameActivityEvents.ENABLE, active::onOpen);
-            game.listen(GameActivityEvents.DISABLE, active::onClose);
 
             game.listen(GamePlayerEvents.OFFER, (offer) -> offer.accept(world, Vec3d.ZERO));
             game.listen(GamePlayerEvents.ADD, active::addPlayer);
@@ -219,16 +218,6 @@ public class BlockHuntActive {
     }
 
     private void onClose() {
-        gameSpace.getPlayers().forEach((player) -> {
-            player.changeGameMode(GameMode.ADVENTURE);
-        });
-        deniedIDs.clear();
-
-        this.participants.forEach((playerRef, player) -> {
-            BlockHuntPlayer blockHuntPlayer = this.participants.get(playerRef);
-            blockHuntPlayer.removeTimeBar();
-        });
-        this.world.getServer().getBossBarManager().getAll().forEach((bossBar) -> this.world.getServer().getBossBarManager().remove(bossBar));
     }
 
     private ActionResult allowInteraction(ServerPlayerEntity serverPlayerEntity, Hand hand, BlockHitResult blockHitResult) {

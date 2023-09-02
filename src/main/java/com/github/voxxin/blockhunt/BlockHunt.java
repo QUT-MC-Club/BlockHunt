@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import xyz.nucleoid.plasmid.game.GameType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BlockHunt implements ModInitializer {
 
@@ -28,5 +29,5 @@ public class BlockHunt implements ModInitializer {
     public static Identifier id(String value) {
         return new Identifier(ID, value);
     }
-    public static ArrayList<Integer> deniedIDs = new ArrayList<>();
+    public static List<Integer> deniedIDs = new ArrayList<>();
 }
