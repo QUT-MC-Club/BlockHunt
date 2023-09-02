@@ -219,6 +219,9 @@ public class BlockHuntActive {
     }
 
     private void onClose() {
+        gameSpace.getPlayers().forEach((player) -> {
+            player.changeGameMode(GameMode.ADVENTURE);
+        });
         deniedIDs.clear();
 
         this.participants.forEach((playerRef, player) -> {
@@ -291,6 +294,7 @@ public class BlockHuntActive {
     }
 
     private void removePlayer(ServerPlayerEntity player) {
+        player.changeGameMode(GameMode.ADVENTURE);
         BlockHuntPlayer blockHuntPlayer = this.participants.get(PlayerRef.of(player));
         blockHuntPlayer.resetDisguise();
         blockHuntPlayer.removeTimeBar();
