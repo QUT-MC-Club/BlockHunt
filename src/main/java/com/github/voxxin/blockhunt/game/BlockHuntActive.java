@@ -345,10 +345,8 @@ public class BlockHuntActive {
                 this.participants.get(PlayerRef.of(player)).removeTimeBar();
                 this.participants.get(PlayerRef.of(player)).resetDisguise();
                 this.participants.get(PlayerRef.of(player)).setHidden(false);
-                this.participants.get(PlayerRef.of(player)).playerDeath();
-                deniedIDs.remove(player.getId());
+                deniedIDs.remove((Integer) player.getId());
                 ((ServerPlayerEntity) source.getAttacker()).setHealth(20);
-                return ActionResult.FAIL;
             } else if (player.isTeamPlayer(seekersTeam)) {
                 this.broadcastMessage(
                         Text.literal("")
@@ -365,6 +363,7 @@ public class BlockHuntActive {
                 );
             }
         }
+
         return ActionResult.FAIL;
     }
 
