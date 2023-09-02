@@ -193,7 +193,7 @@ public class BlockHuntActive {
 
         PlayerSet players = this.gameSpace.getPlayers();
 
-        ServerPlayerEntity firstSeeker = players.stream().findAny().orElse(null);
+        ServerPlayerEntity firstSeeker = players.stream().toList().get(new Random().nextInt(players.stream().toList().size()));
         assert firstSeeker != null;
         this.participants.get(PlayerRef.of(firstSeeker)).setTeam(seekersTeam);
         players.stream().iterator().forEachRemaining((ServerPlayerEntity player) -> {
