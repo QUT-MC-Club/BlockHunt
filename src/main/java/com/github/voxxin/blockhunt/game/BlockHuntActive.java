@@ -351,8 +351,9 @@ public class BlockHuntActive {
                 this.participants.get(PlayerRef.of(player)).removeTimeBar();
                 this.participants.get(PlayerRef.of(player)).resetDisguise();
                 this.participants.get(PlayerRef.of(player)).setHidden(false);
+                this.participants.get(PlayerRef.of(player)).playerDeath();
                 deniedIDs.remove(player.getId());
-                this.spawnSpectator(player);
+                ((ServerPlayerEntity) source.getAttacker()).setHealth(20);
                 return ActionResult.FAIL;
             } else if (player.isTeamPlayer(seekersTeam)) {
                 this.broadcastMessage(
@@ -392,6 +393,7 @@ public class BlockHuntActive {
         this.participants.get(PlayerRef.of(player)).removeTimeBar();
         this.participants.get(PlayerRef.of(player)).resetDisguise();
         this.participants.get(PlayerRef.of(player)).setHidden(false);
+        this.spawnLogic.spawnPlayer(player, this.participants.get(PlayerRef.of(player)));
     }
 
     private void tick() {
