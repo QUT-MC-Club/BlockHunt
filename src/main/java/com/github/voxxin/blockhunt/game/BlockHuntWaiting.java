@@ -3,7 +3,6 @@ package com.github.voxxin.blockhunt.game;
 import com.github.voxxin.blockhunt.BlockHunt;
 import com.github.voxxin.blockhunt.game.map.BlockHuntMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -11,7 +10,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import xyz.nucleoid.plasmid.game.*;
 import xyz.nucleoid.plasmid.game.common.GameWaitingLobby;
@@ -33,6 +31,8 @@ public class BlockHuntWaiting {
     private final BlockHuntSpawnLogic spawnLogic;
     private final ServerWorld world;
     private static List<Block> deniedBlockInteractions = new ArrayList<>();
+
+    private static boolean warnedForSpawns = false;
 
     private BlockHuntWaiting(GameSpace gameSpace, ServerWorld world, BlockHuntMap map, BlockHuntConfig config) {
         this.gameSpace = gameSpace;
@@ -131,8 +131,9 @@ public class BlockHuntWaiting {
             return;
         }
 
-        if (thisMap.spawns().entrySet().stream().noneMatch((entry) -> entry.getKey().equals("spawn_everyone"))) {
+        if (thisMap.spawns().entrySet().stream().noneMatch((entry) -> entry.getKey().equals("spawn_everyone")) && !warnedForSpawns) {
             BlockHunt.LOGGER.info("No default spawn point was found for this map.");
+            warnedForSpawns = true;
         }
 
         this.spawnLogic.resetPlayer(player, GameMode.ADVENTURE);

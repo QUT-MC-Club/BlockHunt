@@ -1,6 +1,7 @@
 package com.github.voxxin.blockhunt.game.util;
 
 import com.github.voxxin.blockhunt.BlockHunt;
+import com.github.voxxin.blockhunt.game.util.ext.WrittenBookItemExt;
 import net.minecraft.block.entity.LecternBlockEntity;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
 import net.minecraft.item.WrittenBookItem;
@@ -127,17 +128,18 @@ public class BlockHuntAnimation {
                     return;
                 }
                 WrittenBookItem book = (WrittenBookItem) lectern.getBook().getItem();
-                BookScreen.WrittenBookContents bookContents = new BookScreen.WrittenBookContents(lectern.getBook());
+
+                ArrayList<String> bookContents = ((WrittenBookItemExt)book).getPages(lectern.getBook());
 
                 if (!book.getName(lectern.getBook()).getString().equals(animationName.getPath())) {
                     BlockHunt.LOGGER.error("Settings could not be created, since the book on lectern at position " + settingsPoint + " does not match the animation name " + animationName.getPath() + " (" + animationName + ") was looking for " + book.getName(lectern.getBook()));
                     return;
                 }
 
-                for (int i = 0; i < bookContents.getPageCount(); i++) {
-                    String page = bookContents.getPage(i).getString();
+                for (String page : bookContents) {
                     page = page.toLowerCase();
-                    page = page.replace("\n", " ");
+                    page = page.replace("\\n", " ");
+                    page = page.replace("\"", " \" ");
 
                     if (page.contains("loop")) {
                         int startIndex = page.indexOf("loop") + "loop".length();
@@ -193,8 +195,10 @@ public class BlockHuntAnimation {
                             int seconds = 0;
                             if (split[0].contains("m:")) minutes = Integer.parseInt(split[0].replace("m:", ""));
                             if (split[0].contains("s:")) seconds = Integer.parseInt(split[0].replace("s:", ""));
-                            if (secondSplit && split[1].contains("m:")) minutes = Integer.parseInt(split[1].replace("m:", ""));
-                            if (secondSplit && split[1].contains("s:")) seconds = Integer.parseInt(split[1].replace("s:", ""));
+                            if (secondSplit && split[1].contains("m:"))
+                                minutes = Integer.parseInt(split[1].replace("m:", ""));
+                            if (secondSplit && split[1].contains("s:"))
+                                seconds = Integer.parseInt(split[1].replace("s:", ""));
 
                             this.startTime = ((minutes * 60) + seconds) * 20;
                         } catch (NumberFormatException e) {
