@@ -144,6 +144,12 @@ public class BlockHuntActive {
             world.getScoreboard().getTeam(hidersTeam.getName()).setShowFriendlyInvisibles(false);
             world.getScoreboard().getTeam(hidersTeam.getName()).setNameTagVisibilityRule(AbstractTeam.VisibilityRule.NEVER);
 
+            world.getScoreboard().getTeam(seekersTeam.getName()).setColor(Formatting.RED);
+            world.getScoreboard().getTeam(seekersTeam.getName()).setPrefix(Text.of("(⚔) "));
+            world.getScoreboard().getTeam(hidersTeam.getName()).setColor(Formatting.YELLOW);
+            world.getScoreboard().getTeam(hidersTeam.getName()).setPrefix(Text.of("(\uD83D\uDEE1) "));
+
+
             // Game Rules
             game.setRule(GameRuleType.FALL_DAMAGE, ActionResult.FAIL);
             game.setRule(GameRuleType.PICKUP_ITEMS, ActionResult.FAIL);
@@ -205,7 +211,7 @@ public class BlockHuntActive {
                 BlockHuntBlock blockEntity = getEntityFromBlock(block);
                 world.spawnEntity(blockEntity);
                 blockHuntPlayer.setDisguise(blockEntity, block);
-                blockHuntPlayer.updateTimeBar(null, widgets);
+                blockHuntPlayer.updateTimeBar(null);
                 deniedIDs.add(player.getId());
             }
         });
@@ -240,7 +246,7 @@ public class BlockHuntActive {
                 return ActionResult.SUCCESS;
             } else if (block == clickedBlock && serverPlayerEntity.isTeamPlayer(hidersTeam) && player.getDisguiseB() != clickedBlock && !isSameBlock) {
                 player.setDisguise(clickedBlock);
-                player.updateTimeBar(true, null);
+                player.updateTimeBar(true);
 
                 serverPlayerEntity.sendMessage(
                         Text.translatable("event.blockhunt.block_changed", clickedBlock.getName().formatted(Formatting.AQUA))
@@ -307,7 +313,7 @@ public class BlockHuntActive {
                 BlockHuntPlayer thisPlayer = this.participants.get(PlayerRef.of(player));
                 if (thisPlayer.isHidden()) {
                     ((WorldExt) this.world).blockHunt$setBlockState(thisPlayer.getPositionHidden(), Blocks.AIR.getDefaultState());
-                    thisPlayer.updateTimeBar(true, null);
+                    thisPlayer.updateTimeBar(true);
                     thisPlayer.setHidden(false);
                 }
                 return ActionResult.SUCCESS;
@@ -440,7 +446,7 @@ public class BlockHuntActive {
                     if (blockHuntPlayer.isHidden()) {
                         ((WorldExt)world).blockHunt$setBlockState(blockHuntPlayer.getPositionHidden(), Blocks.AIR.getDefaultState());
                     }
-                    blockHuntPlayer.updateTimeBar(true, null);
+                    blockHuntPlayer.updateTimeBar(true);
                     blockHuntPlayer.setHidden(false);
                     realSeconds = 0;
                 }
@@ -449,7 +455,7 @@ public class BlockHuntActive {
             if (blockHuntPlayer.getTeam() == hidersTeam && blockHuntPlayer.lastPosition != null && realSeconds == 20 && !blockHuntPlayer.isHidden()) {
                 Vec3i roundedPos = new Vec3i((int) Math.floor(player.getPos().x), (int) Math.floor(player.getPos().y), (int) Math.floor(player.getPos().z));
                 Vec3i roundedOldPos = new Vec3i((int) Math.floor(blockHuntPlayer.lastPosition.x), (int) Math.floor(blockHuntPlayer.lastPosition.y), (int) Math.floor(blockHuntPlayer.lastPosition.z));
-                blockHuntPlayer.updateTimeBar(!roundedPos.equals(roundedOldPos), null);
+                blockHuntPlayer.updateTimeBar(!roundedPos.equals(roundedOldPos));
             }
             if (blockHuntPlayer.getTimeUntilHidden() <= 0 && blockHuntPlayer.getTeam() == hidersTeam && !blockHuntPlayer.isHidden()) {
 

@@ -94,7 +94,7 @@ public class BlockHuntPlayer {
         return this.positionHidden;
     }
 
-    public void updateTimeBar(@Nullable Boolean moved, @Nullable GlobalWidgets widgets) {
+    public void updateTimeBar(@Nullable Boolean moved) {
         if (this.bossBar == null) {
             this.bossBar = new BlockHuntBossBar.HideTimeBossbar();
             this.bossBar.addPlayer(this.player);
