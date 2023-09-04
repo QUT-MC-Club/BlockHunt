@@ -30,8 +30,9 @@ public class BlockHuntPlayer {
     public Vec3d lastPosition;
     public int respawnTicks = 0;
     private BlockPos positionHidden = null;
-
     public BlockPos prevBlockhitResult;
+
+    public int lastRealSecond = 0;
 
     public BlockHuntPlayer(ServerWorld world, PlayerRef player) {
         this.world = world;
@@ -122,6 +123,7 @@ public class BlockHuntPlayer {
         switch (team.getName()) {
             case "seekers" -> {
                 this.player.clearStatusEffects();
+                this.player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, 0, false, false));
 
                 this.player.getInventory().clear();
                 this.player.getInventory().setStack(0, new ItemStack(Items.IRON_SWORD));

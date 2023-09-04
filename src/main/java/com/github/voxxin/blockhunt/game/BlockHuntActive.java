@@ -5,27 +5,15 @@ import com.github.voxxin.blockhunt.game.map.BlockHuntMap;
 import com.github.voxxin.blockhunt.game.util.BlockHuntAnimation;
 import com.github.voxxin.blockhunt.game.util.BlockHuntBlock;
 import com.github.voxxin.blockhunt.game.util.BlockHuntBossBar;
-import com.github.voxxin.blockhunt.game.util.ext.EntityEquipmentUpdateS2CPacketExt;
 import com.github.voxxin.blockhunt.game.util.ext.WorldExt;
-import com.mojang.datafixers.util.Pair;
-import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.scoreboard.AbstractTeam;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
@@ -39,7 +27,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameMode;
-import xyz.nucleoid.plasmid.event.GameEvents;
 import xyz.nucleoid.plasmid.game.GameCloseReason;
 import xyz.nucleoid.plasmid.game.GameSpace;
 import xyz.nucleoid.plasmid.game.common.GlobalWidgets;
@@ -48,12 +35,10 @@ import xyz.nucleoid.plasmid.game.event.GamePlayerEvents;
 import xyz.nucleoid.plasmid.game.player.PlayerSet;
 import xyz.nucleoid.plasmid.game.rule.GameRuleType;
 import xyz.nucleoid.plasmid.util.PlayerRef;
-import xyz.nucleoid.stimuli.event.block.BlockBreakEvent;
 import xyz.nucleoid.stimuli.event.block.BlockPunchEvent;
 import xyz.nucleoid.stimuli.event.block.BlockUseEvent;
 import xyz.nucleoid.stimuli.event.player.PlayerDamageEvent;
 import xyz.nucleoid.stimuli.event.player.PlayerDeathEvent;
-import xyz.nucleoid.stimuli.event.player.PlayerInventoryActionEvent;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -77,8 +62,6 @@ public class BlockHuntActive {
     private static Team seekersTeam = null;
     private static Team hidersTeam = null;
     private static Team spectatorTeam = null;
-
-    private int realSeconds = 0;
 
     private int lastHiddenReset = 20;
 
@@ -290,6 +273,7 @@ public class BlockHuntActive {
     }
 
     private void removePlayer(ServerPlayerEntity player) {
+        player.clearStatusEffects();
         if (player.interactionManager.getGameMode() == GameMode.SPECTATOR || player.interactionManager.getGameMode() == GameMode.SURVIVAL) player.changeGameMode(GameMode.ADVENTURE);
         BlockHuntPlayer blockHuntPlayer = this.participants.get(PlayerRef.of(player));
         blockHuntPlayer.resetDisguise();
@@ -448,11 +432,11 @@ public class BlockHuntActive {
                     }
                     blockHuntPlayer.updateTimeBar(true);
                     blockHuntPlayer.setHidden(false);
-                    realSeconds = 0;
+                    blockHuntPlayer.lastRealSecond = 0;
                 }
             }
 
-            if (blockHuntPlayer.getTeam() == hidersTeam && blockHuntPlayer.lastPosition != null && realSeconds == 20 && !blockHuntPlayer.isHidden()) {
+            if (blockHuntPlayer.getTeam() == hidersTeam && blockHuntPlayer.lastPosition != null && blockHuntPlayer.lastRealSecond == 20 && !blockHuntPlayer.isHidden()) {
                 Vec3i roundedPos = new Vec3i((int) Math.floor(player.getPos().x), (int) Math.floor(player.getPos().y), (int) Math.floor(player.getPos().z));
                 Vec3i roundedOldPos = new Vec3i((int) Math.floor(blockHuntPlayer.lastPosition.x), (int) Math.floor(blockHuntPlayer.lastPosition.y), (int) Math.floor(blockHuntPlayer.lastPosition.z));
                 blockHuntPlayer.updateTimeBar(!roundedPos.equals(roundedOldPos));
@@ -467,14 +451,14 @@ public class BlockHuntActive {
             if (blockHuntPlayer.respawnTicks != 0) blockHuntPlayer.respawnTicks--;
 
             blockHuntPlayer.lastPosition = player.getPos();
+
+            if (blockHuntPlayer.lastRealSecond == 20) {
+                blockHuntPlayer.lastRealSecond = 0;
+            } else blockHuntPlayer.lastRealSecond++;
         }));
 
         if (this.world.getScoreboard().getTeam(hidersTeam.getName()).getPlayerList().size() == 0) this.broadcastWin(this.checkWinResult());
         this.sidebar.tick();
-
-        if (realSeconds == 20) {
-            realSeconds = 0;
-        } else realSeconds++;
     }
 
     private BlockHuntBlock getEntityFromBlock(Block block) {
