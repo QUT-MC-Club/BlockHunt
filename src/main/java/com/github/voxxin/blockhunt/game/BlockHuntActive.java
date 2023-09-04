@@ -28,6 +28,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameMode;
 import xyz.nucleoid.plasmid.game.GameCloseReason;
+import xyz.nucleoid.plasmid.game.GameLifecycle;
 import xyz.nucleoid.plasmid.game.GameSpace;
 import xyz.nucleoid.plasmid.game.common.GlobalWidgets;
 import xyz.nucleoid.plasmid.game.event.GameActivityEvents;
@@ -267,8 +268,8 @@ public class BlockHuntActive {
     }
 
     private void addPlayer(ServerPlayerEntity player) {
-        if (!this.participants.containsKey(PlayerRef.of(player))) {
-            this.spawnSpectator(player);
+        if (gameSpace.getTime() < stageManager.finishTime && gameSpace.getTime() > stageManager.startTime) {
+            this.spawnLogic.resetPlayer(player, GameMode.SPECTATOR);
         }
     }
 
@@ -369,15 +370,6 @@ public class BlockHuntActive {
     }
 
 
-
-    private void spawnSpectator(ServerPlayerEntity player) {
-        this.spawnLogic.resetPlayer(player, GameMode.SPECTATOR);
-        this.participants.get(PlayerRef.of(player)).setTeam(spectatorTeam);
-        this.participants.get(PlayerRef.of(player)).removeTimeBar();
-        this.participants.get(PlayerRef.of(player)).resetDisguise();
-        this.participants.get(PlayerRef.of(player)).setHidden(false);
-        this.spawnLogic.spawnPlayer(player, this.participants.get(PlayerRef.of(player)));
-    }
 
     private void tick() {
         long time = this.world.getTime();
