@@ -514,7 +514,7 @@ public class BlockHuntActive {
             return WinResult.no();
         }
 
-        if (this.world.getScoreboard().getTeam(hidersTeam.getName()).getPlayerList().size() == 0) {
+        if (participants.values().stream().anyMatch(player -> player.getTeam() == hidersTeam)) {
             return WinResult.win(hidersTeam);
         } else {
             return WinResult.win(seekersTeam);
