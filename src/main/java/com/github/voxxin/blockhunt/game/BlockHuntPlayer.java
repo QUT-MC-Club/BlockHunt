@@ -41,7 +41,7 @@ public class BlockHuntPlayer {
     }
 
     public void setTeam(Team team) {
-        world.getScoreboard().addPlayerToTeam(player.getEntityName(), team);
+        world.getScoreboard().addScoreHolderToTeam(player.getNameForScoreboard(), team);
         this.team = team;
     }
 
