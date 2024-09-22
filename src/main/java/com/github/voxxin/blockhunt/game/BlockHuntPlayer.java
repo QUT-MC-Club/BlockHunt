@@ -124,11 +124,9 @@ public class BlockHuntPlayer {
             case "seekers" -> {
                 this.player.clearStatusEffects();
                 this.player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, 0, false, false));
-                this.player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, StatusEffectInstance.INFINITE, 1, false, false));
+                this.player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, StatusEffectInstance.INFINITE, 3, false, false));
 
                 this.player.getInventory().clear();
-                this.player.getInventory().setStack(0, new ItemStack(Items.IRON_SHOVEL).setCustomName(Text.of("§f§lSmash Spoon")));
-                this.player.getInventory().setStack(0, new ItemStack(Items.STICK).setCustomName(Text.of("§f§lSlap Stick")));
                 this.player.getInventory().armor.set(0, new ItemStack(Items.CHAINMAIL_BOOTS).setCustomName(Text.of("§f§lHeavy Boots")));
                 this.player.getInventory().armor.set(1, new ItemStack(Items.CHAINMAIL_LEGGINGS).setCustomName(Text.of("§f§lHeavy Pants")));
                 this.player.getInventory().armor.set(2, new ItemStack(Items.CHAINMAIL_CHESTPLATE).setCustomName(Text.of("§f§lHeavy Chestplate")));
@@ -136,10 +134,9 @@ public class BlockHuntPlayer {
             }
             case "hiders" -> {
                 this.player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, StatusEffectInstance.INFINITE, 0, false, false));
-
+                this.player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, StatusEffectInstance.INFINITE, 1, false, false));
 
                 this.player.getInventory().clear();
-                this.player.getInventory().setStack(0, new ItemStack(Items.WOODEN_SHOVEL).setCustomName(Text.of("§f§lSlap Spoon")));
             }
         }
 

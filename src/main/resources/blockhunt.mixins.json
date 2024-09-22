@@ -6,7 +6,6 @@
   "mixins": [
     "BossBarWidgetMixin",
     "DisplayEntityMixin",
-    "ServerPlayerNetworkHandlerMixin",
     "WorldMixin",
     "WrittenBookItemMixin"
   ],
