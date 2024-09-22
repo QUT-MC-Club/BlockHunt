@@ -1,6 +1,3 @@
-# TODO:
-currently this is not implemented on the server since I would like to include it however some changes are needed. namely the hiders should not be able to kill and spawn camp hunters so easily. I would also like to change and offer more map variety especially ones that suit block hunt better.
-
 # BlockHunt Minigame
 
 Welcome to BlockHunt, a fun and engaging minigame for Minecraft! 
